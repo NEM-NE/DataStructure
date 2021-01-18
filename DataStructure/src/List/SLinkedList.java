@@ -1,5 +1,7 @@
 package List;
 
+import java.util.NoSuchElementException;
+
 import Interface.Collection;
 import Interface.Iterator;
 import Interface.List;
@@ -56,6 +58,7 @@ public class SLinkedList<E> implements List<E> {
 		
 		tail.next = new_node;
 		tail = new_node;
+		size++;
 		
 	}
 	
@@ -65,26 +68,174 @@ public class SLinkedList<E> implements List<E> {
 		return true;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void add(int index, Object element) {
-		// TODO Auto-generated method stub
+		if(index >= size || index < 0) throw new IndexOutOfBoundsException();
+		Node<E> new_node = new Node<E>((E) element);
 		
+ 		if(index == 0){
+			addFirst((E) element);
+			return;
+		}
+		if(index == size-1) {
+			addLast((E) element);
+			return;
+		}
+		
+		Node<E> pre_node = search(index-1);
+		Node<E> current_node = search(index-1);
+		pre_node.next = new_node;
+		new_node.next = current_node;
+		
+		size++;
+		
+	}
+	
+	public E remove() {// remove head
+		Node<E> temp = head;
+		
+		if(temp == null) throw new NoSuchElementException();
+		
+		head = head.next;
+		E result = temp.data;
+		
+		temp.next = null;
+		temp.data = null;
+		
+		size--;
+		
+		return result;
+	}
+	
+	@Override
+	public E remove(int index) {
+		if(index >= size || index < 0) throw new IndexOutOfBoundsException();
+		
+		if(index == 0) {
+			return remove();
+		}
+		
+		Node<E> pre_node = search(index-1);
+		Node<E> current_node = pre_node.next;
+		Node<E> next_node = current_node.next;
+		
+		pre_node.next = next_node;
+
+		E result = current_node.data;
+		current_node.data = null;
+		current_node.next = null;
+		
+		size--;
+		
+		return result;
+	}
+	
+	@Override
+	public boolean remove(Object o) {
+		Node<E> pre_node = head;
+		Node<E> x = head;
+		boolean hasValue = false;
+		
+		for(; x != null; x = x.next) {
+			if(o.equals(x.data)) {
+				hasValue = true;
+				break;
+			}
+			pre_node = x;
+		}
+		
+		if(x.equals(head)) {
+			remove();
+			return true;
+		}
+		
+		else if(!hasValue) {
+			return hasValue;
+		}
+		
+		else {
+			Node<E> current_node = pre_node.next;
+			Node<E> next_node = current_node.next;
+			
+			pre_node.next = next_node;
+
+			current_node.data = null;
+			current_node.next = null;
+			
+			size--;
+			return true;
+		}
+	}
+	
+	@Override
+	public E get(int index) {
+		return search(index).data;
+	}
+
+	@Override
+	public int indexOf(Object o) {
+		int cnt = 1;
+		Node<E> pre_node = head;
+		
+		for(; cnt < size; cnt++ ) {
+			if(pre_node.data.equals(o)) {
+				return cnt;
+			}
+			pre_node = pre_node.next;
+		}
+		
+		return -1;
+	}
+
+	@Override
+	public int lastIndexOf(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public E set(int index, Object element) {
+		Node<E> node = search(index);
+		node.data = (E) element;
+		return null;
+	}
+	
+	@Override
+	public boolean contains(Object o) {
+		return indexOf(o) != -1;
+	}
+	
+	@Override
+	public int size() {
+		return size;
+	}
+	
+	@Override
+	public void clear() {
+		Node<E> x = head;
+		
+		for(; x != null;) {
+			Node<E> next = x.next;
+			x.data = null;
+			x.next = null;
+			
+			x = next;
+		}
+		
+		head = tail = null;
+		size = 0;
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return size() > 0;
 	}
 
 	@Override
 	public boolean addAll(Collection<? extends E> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void clear() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean contains(Object o) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -96,21 +247,9 @@ public class SLinkedList<E> implements List<E> {
 	}
 
 	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public Iterator<E> iterator() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public boolean remove(Object o) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -123,12 +262,6 @@ public class SLinkedList<E> implements List<E> {
 	public boolean retainAll(Collection<?> c) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -147,36 +280,6 @@ public class SLinkedList<E> implements List<E> {
 	public boolean addAll(int index, Collection<? extends E> c) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public E get(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int indexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int lastIndexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public E remove(int index) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public E set(int index, Object element) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
