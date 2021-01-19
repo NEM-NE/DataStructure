@@ -7,8 +7,8 @@ import Interface.Iterator;
 import Interface.List;
 
 public class SLinkedList<E> implements List<E> {
-	private Node<E> head;	// 노드의 첫 부분 
-	private Node<E> tail;	// 노드의 마지막 부분
+	private SNode<E> head;	// 노드의 첫 부분 
+	private SNode<E> tail;	// 노드의 마지막 부분
 	private int size;	// 요소 개수 
 	
 	// 생성자
@@ -18,10 +18,10 @@ public class SLinkedList<E> implements List<E> {
 		this.size = 0;
 	}
 	
-	private Node<E> search(int index){
+	private SNode<E> search(int index){
 		if(index >= size || index < 0) throw new IndexOutOfBoundsException();
 		
-		Node<E> x = head;
+		SNode<E> x = head;
 		
 		for(int i = 0; i < index; i++) {
 			x = x.next;
@@ -31,7 +31,7 @@ public class SLinkedList<E> implements List<E> {
 	}
 	
 	public void addFirst(E o) {
-		Node<E> new_node = new Node<>(o);
+		SNode<E> new_node = new SNode<>(o);
 		
 		new_node.next = head;
 		head = new_node;
@@ -49,7 +49,7 @@ public class SLinkedList<E> implements List<E> {
 	}
 	
 	public void addLast(E o) {
-		Node<E> new_node = new Node<>(o);
+		SNode<E> new_node = new SNode<>(o);
 		
 		if(size == 0) {
 			addFirst(o);
@@ -72,7 +72,7 @@ public class SLinkedList<E> implements List<E> {
 	@Override
 	public void add(int index, Object element) {
 		if(index >= size || index < 0) throw new IndexOutOfBoundsException();
-		Node<E> new_node = new Node<E>((E) element);
+		SNode<E> new_node = new SNode<E>((E) element);
 		
  		if(index == 0){
 			addFirst((E) element);
@@ -83,8 +83,8 @@ public class SLinkedList<E> implements List<E> {
 			return;
 		}
 		
-		Node<E> pre_node = search(index-1);
-		Node<E> current_node = search(index-1);
+		SNode<E> pre_node = search(index-1);
+		SNode<E> current_node = search(index-1);
 		pre_node.next = new_node;
 		new_node.next = current_node;
 		
@@ -93,7 +93,7 @@ public class SLinkedList<E> implements List<E> {
 	}
 	
 	public E remove() {// remove head
-		Node<E> temp = head;
+		SNode<E> temp = head;
 		
 		if(temp == null) throw new NoSuchElementException();
 		
@@ -116,9 +116,9 @@ public class SLinkedList<E> implements List<E> {
 			return remove();
 		}
 		
-		Node<E> pre_node = search(index-1);
-		Node<E> current_node = pre_node.next;
-		Node<E> next_node = current_node.next;
+		SNode<E> pre_node = search(index-1);
+		SNode<E> current_node = pre_node.next;
+		SNode<E> next_node = current_node.next;
 		
 		pre_node.next = next_node;
 
@@ -133,8 +133,8 @@ public class SLinkedList<E> implements List<E> {
 	
 	@Override
 	public boolean remove(Object o) {
-		Node<E> pre_node = head;
-		Node<E> x = head;
+		SNode<E> pre_node = head;
+		SNode<E> x = head;
 		boolean hasValue = false;
 		
 		for(; x != null; x = x.next) {
@@ -155,8 +155,8 @@ public class SLinkedList<E> implements List<E> {
 		}
 		
 		else {
-			Node<E> current_node = pre_node.next;
-			Node<E> next_node = current_node.next;
+			SNode<E> current_node = pre_node.next;
+			SNode<E> next_node = current_node.next;
 			
 			pre_node.next = next_node;
 
@@ -176,7 +176,7 @@ public class SLinkedList<E> implements List<E> {
 	@Override
 	public int indexOf(Object o) {
 		int cnt = 1;
-		Node<E> pre_node = head;
+		SNode<E> pre_node = head;
 		
 		for(; cnt < size; cnt++ ) {
 			if(pre_node.data.equals(o)) {
@@ -197,7 +197,7 @@ public class SLinkedList<E> implements List<E> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public E set(int index, Object element) {
-		Node<E> node = search(index);
+		SNode<E> node = search(index);
 		node.data = (E) element;
 		return null;
 	}
@@ -214,10 +214,10 @@ public class SLinkedList<E> implements List<E> {
 	
 	@Override
 	public void clear() {
-		Node<E> x = head;
+		SNode<E> x = head;
 		
 		for(; x != null;) {
-			Node<E> next = x.next;
+			SNode<E> next = x.next;
 			x.data = null;
 			x.next = null;
 			

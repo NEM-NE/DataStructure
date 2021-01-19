@@ -1,10 +1,10 @@
 package List;
 
-public class Node<E> {
+public class SNode<E> {
 	E data;
-	Node<E> next;	// 다음 노드객체를 가리키는 래퍼런스 변수
+	SNode<E> next;	// 다음 노드객체를 가리키는 래퍼런스 변수
  
-	Node(E data) {
+	SNode(E data) {
 		this.data = data;
 		this.next = null;
 	}
