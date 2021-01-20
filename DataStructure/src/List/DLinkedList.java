@@ -179,15 +179,33 @@ public class DLinkedList<E> implements List<E>, Collection<E> {
 	}
 
 	@Override
-	public int indexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int indexOf(Object o) {		//HEAD FIRST
+		Node<E> node = head;
+		int cnt = 0;
+		
+		for(; node != null; node = node.next) {
+			if(o.equals(node.data)) {
+				return cnt;
+			}
+			cnt++;
+		}
+		
+		return -1;
 	}
 	
 	@Override
-	public int lastIndexOf(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int lastIndexOf(Object o) {		//TAIL FRIST
+		Node<E> node = tail;
+		int cnt = size;
+		
+		for(; node != null; node = node.pre) {
+			cnt--;
+			if(o.equals(node.data)) {
+				return cnt;
+			}
+		}
+		
+		return -1;
 	}
 	
 	@Override
@@ -203,8 +221,7 @@ public class DLinkedList<E> implements List<E>, Collection<E> {
 	
 	@Override
 	public boolean contains(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		return indexOf(o) != -1;
 	}
 	
 	@Override
@@ -214,19 +231,31 @@ public class DLinkedList<E> implements List<E>, Collection<E> {
 	}
 
 	@Override
+	public int size() {
+		return size;
+	}
+	
+	@Override
+	public boolean isEmpty() {
+		return size == 0;
+	}
+	
+	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
+		Node<E> node = head;
+		
+		for(; node != null; node = node.next) {
+			node.data = null;
+			node.pre = null;
+		}
+		
+		head = tail = null;
+		size = 0;
 		
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isEmpty() {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -247,12 +276,6 @@ public class DLinkedList<E> implements List<E>, Collection<E> {
 	public boolean retainAll(Collection<?> c) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
