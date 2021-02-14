@@ -1,5 +1,8 @@
 package List;
 
+import java.util.Arrays;
+import java.util.EmptyStackException;
+
 import Interface.StackInteface;
 
 public class Stack<E> implements StackInteface<E>{
@@ -21,46 +24,91 @@ public class Stack<E> implements StackInteface<E>{
 		this.array = new Object[capacity];
 		this.size = 0;
 	}
-
+	
+	private void resize() {
+		if(this.size == this.array.length) {	// expand array.lengt * 2
+			Object[] newArray = new Object[this.array.length * 2];
+			System.arraycopy(array, 0, newArray, 0, array.length);
+			this.array = newArray;
+		}
+		
+		if(this.size < this.array.length / 2) {
+			Object[] newArray = new Object[this.array.length / 2];
+			System.arraycopy(array, 0, newArray, 0, array.length);
+			this.array = newArray;
+		}
+		
+		if(Arrays.equals(array, EMPTY_ARRAY)) {
+			array = new Object[DEFAULT_CAPACITY];
+			return;
+		}
+	}
+	
 	@Override
 	public E push(E item) {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.size == this.array.length) resize();
+		array[size] = item;
+		
+		size++;
+		
+		return item;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public E pop() {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.size == 0) {
+			throw new EmptyStackException();
+		}
+		
+		E item = (E) array[size-1];
+		array[size-1] = null;
+		
+		size--;
+		resize();
+		
+		return item;
 	}
 
 	@Override
 	public E peek() {
-		// TODO Auto-generated method stub
-		return null;
+		if(this.size == 0) {
+			throw new EmptyStackException();
+		}
+		
+		return (E) array[size-1];
 	}
 
 	@Override
 	public int search(Object value) {
-		// TODO Auto-generated method stub
-		return 0;
+		int search = 0;
+		
+		for(int i = size; i > 0; i--) {
+			search++;
+			if(array[i-1] == value) {
+				return search;
+			}
+		}
+		return -1;
 	}
 
 	@Override
 	public int size() {
-		// TODO Auto-generated method stub
-		return 0;
+		return size;
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		// 저장되어있던 모든 요소를 null 처리 해준다.
+		for(int i = 0; i < size; i++) {
+			array[i] = null;
+		}
+		size = 0;
+		resize();
 	}
 
 	@Override
 	public boolean empty() {
-		// TODO Auto-generated method stub
-		return false;
+		return (size == 0);
 	}
 }

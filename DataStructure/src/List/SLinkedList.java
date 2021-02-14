@@ -84,9 +84,8 @@ public class SLinkedList<E> implements List<E> {
 		}
 		
 		SNode<E> pre_node = search(index-1);
-		SNode<E> current_node = search(index-1);
+		new_node.next = pre_node.next;
 		pre_node.next = new_node;
-		new_node.next = current_node;
 		
 		size++;
 		
