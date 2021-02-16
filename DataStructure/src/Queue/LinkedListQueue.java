@@ -102,7 +102,15 @@ public class LinkedListQueue<E> implements Queue<E> {
 	}
 	
 	public boolean contains(Object value) {
+		Node<E> x = head;
 		
+		for(int i = 0; i < size; i++) {
+			if(x.data.equals(value)) {
+				return true;
+			}
+			
+			x = x.next;
+		}
 		
 		return false;
 	}
